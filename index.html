@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Бабл Ти - Получите Бесплатный Купон на Кофе</title>
+    <!-- Подключение Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Подключение иконок Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrQkTyUGNp/bUYZfX0bfSbR3mSdSPWod1HxIbiR/J6IhEIsd1v7s+VWWQ0rv+OyRkXoY4kE4D1F++u6hzA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Общие стили */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Стили контейнера формы */
+        .registration-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Заголовок */
+        .registration-container h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #ffdd57;
+        }
+
+        /* Стили формы */
+        .registration-form label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .registration-form input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0 20px 0;
+            border: none;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .registration-form input:focus {
+            background: rgba(255, 255, 255, 1);
+            outline: none;
+        }
+
+        /* Кнопка отправки */
+        .registration-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff6347;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+        }
+
+        .registration-form button:hover {
+            background-color: #ff4500;
+            transform: scale(1.05);
+        }
+
+        /* Сообщение об успехе */
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #32cd32;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Иконка перед кнопкой */
+        .registration-form button i {
+            margin-right: 8px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 500px) {
+            .registration-container {
+                padding: 20px;
+            }
+
+            .registration-container h2 {
+                font-size: 1.5em;
+            }
+
+            .registration-form button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="registration-container">
+        <h2>Бабл Ти</h2>
+        <p>Получите бесплатный купон на кофе!</p>
+        <form id="regForm" class="registration-form">
+            <label for="email">Электронная почта:</label>
+            <input type="email" id="email" name="email" placeholder="example@domain.com" required>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" placeholder="Введите ваш пароль" required>
+
+            <button type="submit"><i class="fas fa-coffee"></i> Зарегистрироваться</button>
+        </form>
+        <p class="success-message" id="successMessage">Спасибо за регистрацию! Купон отправлен на вашу почту.</p>
+    </div>
+
+    <script>
+        document.getElementById('regForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Предотвращаем стандартную отправку формы
+
+            const form = event.target;
+            const data = new FormData(form);
+
+            // Отправка данных на Formspree
+            fetch('https://formspree.io/f/xanywyew', { // Замените YOUR_FORM_ID на ваш реальный ID
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    form.reset();
+                    form.style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте позже.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте позже.');
+            });
+        });
+    </script>
+
+</body>
+</html>
